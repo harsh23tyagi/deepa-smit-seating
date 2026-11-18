@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deepa &amp; Smit — Printable Venue QR Code</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --burgundy: #681e32;
+      --gold: #b6893e;
+      --ivory: #fcf9f5;
+      --blush: #f6edf0;
+      --border-rose: #e3d3d8;
+      --text-main: #2d1d22;
+      --text-muted: #755b63;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 24px 16px 48px;
+      background: var(--ivory);
+      color: var(--text-main);
+      font-family: "Plus Jakarta Sans", -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .setup-panel {
+      width: 100%;
+      max-width: 580px;
+      background: #ffffff;
+      border: 1px solid var(--border-rose);
+      border-radius: 18px;
+      padding: 18px 20px;
+      box-shadow: 0 8px 24px rgba(75, 18, 34, 0.08);
+    }
+
+    .setup-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 10px;
+    }
+
+    .setup-top h1 {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--burgundy);
+    }
+
+    .back-link {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--burgundy);
+      text-decoration: none;
+    }
+
+    .url-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .url-row input {
+      flex: 1 1 240px;
+      height: 42px;
+      border: 1.5px solid var(--border-rose);
+      border-radius: 10px;
+      padding: 0 12px;
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+
+    .btn {
+      height: 42px;
+      padding: 0 16px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--burgundy);
+      background: var(--burgundy);
+      color: #ffffff;
+    }
+
+    .btn-outline {
+      background: var(--blush);
+      color: var(--burgundy);
+      border-color: var(--border-rose);
+    }
+
+    .setup-hint {
+      margin: 10px 0 0;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* Printable Wedding Poster */
+    .poster-card {
+      width: 100%;
+      max-width: 520px;
+      background: #ffffff;
+      border: 1px solid var(--border-rose);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 16px 44px rgba(75, 18, 34, 0.12);
+    }
+
+    .poster-inner {
+      border: 2px solid var(--gold);
+      border-radius: 14px;
+      padding: 40px 28px 34px;
+      text-align: center;
+      background: radial-gradient(circle at 50% 0%, #fffdf9 0%, #ffffff 65%, #fbf5f7 100%);
+    }
+
+    .poster-eyebrow {
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .poster-title {
+      margin: 0;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 3.1rem;
+      font-weight: 700;
+      color: var(--burgundy);
+      line-height: 1.05;
+    }
+
+    .poster-subtitle {
+      margin: 8px 0 26px;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-style: italic;
+      font-size: 1.45rem;
+      color: var(--gold);
+    }
+
+    .qr-frame {
+      display: inline-flex;
+      padding: 16px;
+      background: #ffffff;
+      border: 1.5px solid var(--border-rose);
+      border-radius: 18px;
+      box-shadow: 0 8px 22px rgba(104, 30, 50, 0.08);
+    }
+
+    #qrcode {
+      width: 220px;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #qrcode img,
+    #qrcode canvas {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .poster-cta {
+      margin: 24px 0 6px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--burgundy);
+    }
+
+    .poster-desc {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .poster-url {
+      margin-top: 16px;
+      font-size: 0.74rem;
+      color: #9e858d;
+      word-break: break-all;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .setup-panel {
+        display: none;
+      }
+      .poster-card {
+        box-shadow: none;
+        border: none;
+        max-width: 100%;
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="setup-panel">
+    <div class="setup-top">
+      <h1>Venue QR Code Generator</h1>
+      <a href="index.html" class="back-link">&larr; Back to Seating Chart</a>
+    </div>
+    <div class="url-row">
+      <input type="url" id="site-url" placeholder="https://your-wedding-site.com" aria-label="Seating chart URL" />
+      <button type="button" class="btn btn-outline" id="btn-generate">Update QR</button>
+      <button type="button" class="btn" id="btn-print">Print / Save PDF</button>
+    </div>
+    <p class="setup-hint">
+      Host this folder (e.g. on Netlify Drop, GitHub Pages, or Vercel), paste your live link above, and print or save as PDF for your wedding welcome easel.
+    </p>
+  </div>
+
+  <main class="poster-card">
+    <div class="poster-inner">
+      <div class="poster-eyebrow">Welcome to the Reception</div>
+      <h2 class="poster-title">Deepa &amp; Smit</h2>
+      <p class="poster-subtitle">Please find your seat</p>
+
+      <div class="qr-frame">
+        <div id="qrcode" aria-label="QR code to seating chart"></div>
+      </div>
+
+      <p class="poster-cta">Scan to Locate Your Table</p>
+      <p class="poster-desc">
+        Point your phone camera at the QR code to search your name or tap your table on the floor plan.
+      </p>
+      <div class="poster-url" id="poster-url-text"></div>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    (function () {
+      const urlInput = document.getElementById("site-url");
+      const qrContainer = document.getElementById("qrcode");
+      const posterUrlText = document.getElementById("poster-url-text");
+      const btnGenerate = document.getElementById("btn-generate");
+      const btnPrint = document.getElementById("btn-print");
+
+      // Default to index.html in the current directory
+      const defaultUrl = window.location.href.replace(/qr-card\.html.*$/i, "index.html");
+      urlInput.value = defaultUrl.startsWith("http") ? defaultUrl : "https://deepa-and-smit-seating.netlify.app";
+
+      function renderQR() {
+        const value = urlInput.value.trim();
+        if (!value) return;
+        qrContainer.innerHTML = "";
+        posterUrlText.textContent = value;
+
+        if (typeof window.QRCode === "function") {
+          new window.QRCode(qrContainer, {
+            text: value,
+            width: 220,
+            height: 220,
+            colorDark: "#681e32",
+            colorLight: "#ffffff",
+            correctLevel: window.QRCode.CorrectLevel.H
+          });
+        } else {
+          qrContainer.innerHTML = '<p style="font-size:12px;color:#755b63;padding:16px;">Connect to the internet to render the QR code.</p>';
+        }
+      }
+
+      btnGenerate.addEventListener("click", renderQR);
+      urlInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") renderQR();
+      });
+      btnPrint.addEventListener("click", () => window.print());
+
+      renderQR();
+    })();
+  </script>
+</body>
+</html>

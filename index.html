@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Deepa &amp; Smit — Find Your Seat</title>
+  <meta name="description" content="Interactive wedding seating chart for Deepa & Smit. Search your name or explore the round tables to find your seat." />
+
+  <!-- Open Graph for nice link previews when shared -->
+  <meta property="og:title" content="Deepa & Smit — Wedding Seating Chart" />
+  <meta property="og:description" content="Tap to find your table and seat at Deepa & Smit's wedding." />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page-bg" aria-hidden="true"></div>
+
+  <header class="hero-header">
+    <div class="ornament" aria-hidden="true">
+      <svg viewBox="0 0 180 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 14H66" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.55" />
+        <path d="M114 14H168" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.55" />
+        <path d="M90 4L94.5 11.5L103 14L94.5 16.5L90 24L85.5 16.5L77 14L85.5 11.5L90 4Z" stroke="currentColor" stroke-width="1.2" fill="currentColor" fill-opacity="0.14" />
+        <circle cx="71" cy="14" r="2" fill="currentColor" opacity="0.7" />
+        <circle cx="109" cy="14" r="2" fill="currentColor" opacity="0.7" />
+      </svg>
+    </div>
+
+    <h1 class="couple-title" id="couple-title">Deepa &amp; Smit</h1>
+    <p class="couple-subtitle" id="couple-subtitle">Please find your seat</p>
+    <p class="venue-stats" id="venue-stats">11 Tables &bull; 99 Guests</p>
+  </header>
+
+  <main class="app-shell">
+    <!-- Search + View Switcher Bar -->
+    <section class="controls-bar" aria-label="Search and view options">
+      <div class="search-wrapper">
+        <div class="search-input-box">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="7.5" />
+            <path d="M20 20L16.4 16.4" stroke-linecap="round" />
+          </svg>
+          <input
+            type="search"
+            id="guest-search"
+            placeholder="Search your name..."
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+            aria-label="Search guest name"
+          />
+          <button type="button" id="clear-search" class="clear-btn hidden" aria-label="Clear search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Instant Autocomplete Dropdown -->
+        <ul id="search-results" class="search-dropdown hidden" role="listbox" aria-label="Matching guests"></ul>
+      </div>
+
+      <div class="view-toggle" role="tablist" aria-label="Seating chart view">
+        <button type="button" class="toggle-btn active" id="btn-floor-view" role="tab" aria-selected="true" data-view="floor">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <circle cx="7" cy="8" r="3" />
+            <circle cx="17" cy="8" r="3" />
+            <circle cx="12" cy="16.5" r="3" />
+          </svg>
+          <span>Table Map</span>
+        </button>
+        <button type="button" class="toggle-btn" id="btn-list-view" role="tab" aria-selected="false" data-view="list">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M8 6h12M8 12h12M8 18h12" stroke-linecap="round" />
+            <circle cx="4" cy="6" r="1" fill="currentColor" />
+            <circle cx="4" cy="12" r="1" fill="currentColor" />
+            <circle cx="4" cy="18" r="1" fill="currentColor" />
+          </svg>
+          <span>List View</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Highlighted Guest / Table Banner -->
+    <section id="selection-banner" class="selection-banner hidden" aria-live="polite">
+      <div class="selection-info">
+        <span class="selection-badge" id="selection-table-badge">Table 1</span>
+        <div class="selection-text">
+          <strong id="selection-title">Aditi</strong>
+          <span id="selection-subtitle">Seat 1 &bull; 11 guests at this table</span>
+        </div>
+      </div>
+      <div class="selection-actions">
+        <button type="button" class="btn-secondary" id="btn-open-table-details">See Tablemates</button>
+        <button type="button" class="btn-ghost" id="btn-reset-view">All Tables</button>
+      </div>
+    </section>
+
+    <!-- FLOOR PLAN (ROUND TABLES) VIEW -->
+    <section id="floor-view" class="floor-section" aria-label="Interactive round table map">
+      <div class="floor-viewport" id="floor-viewport">
+        <div class="floor-stage-label" aria-hidden="true">
+          <span>&#10022; Reception Floor Plan &#10022;</span>
+        </div>
+
+        <div class="floor-canvas" id="floor-canvas">
+          <!-- Round tables rendered dynamically by app.js -->
+        </div>
+
+        <!-- Zoom & Fit Controls -->
+        <div class="map-controls" aria-label="Map zoom controls">
+          <button type="button" id="zoom-in" class="map-ctrl-btn" aria-label="Zoom in" title="Zoom in">+</button>
+          <button type="button" id="zoom-out" class="map-ctrl-btn" aria-label="Zoom out" title="Zoom out">&minus;</button>
+          <button type="button" id="zoom-fit" class="map-ctrl-btn" aria-label="Fit all tables" title="Fit all tables">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="floor-hint" id="floor-hint">
+          Tap any round table to see guests &bull; Drag or pinch to explore
+        </div>
+      </div>
+    </section>
+
+    <!-- LIST VIEW -->
+    <section id="list-view" class="list-section hidden" aria-label="Guest list view">
+      <div class="list-toolbar">
+        <div class="list-mode-pills">
+          <button type="button" class="pill-btn active" id="list-mode-alpha" data-mode="alpha">A &ndash; Z Guests</button>
+          <button type="button" class="pill-btn" id="list-mode-table" data-mode="table">By Table</button>
+        </div>
+        <span class="list-count" id="list-count">99 guests</span>
+      </div>
+
+      <div id="list-container" class="list-container">
+        <!-- Populated dynamically by app.js -->
+      </div>
+    </section>
+  </main>
+
+  <!-- TABLE DETAIL MODAL / BOTTOM SHEET -->
+  <div id="table-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-table-title">
+    <div class="modal-sheet">
+      <div class="modal-handle" aria-hidden="true"></div>
+      <div class="modal-header">
+        <div>
+          <span class="modal-eyebrow" id="modal-table-note">Reception Seating</span>
+          <h2 id="modal-table-title">Table 1</h2>
+        </div>
+        <button type="button" id="close-modal" class="modal-close-btn" aria-label="Close table details">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-round-preview" id="modal-round-preview">
+          <!-- Interactive close-up round table SVG/HTML -->
+        </div>
+
+        <div class="modal-guest-list-wrap">
+          <h3 class="modal-list-heading">Guests at this table <span id="modal-guest-count"></span></h3>
+          <ul class="modal-guest-list" id="modal-guest-list">
+            <!-- Populated dynamically -->
+          </ul>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" id="btn-locate-table-on-map" class="btn-primary">
+          Zoom to Table on Map
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <p>Deepa &amp; Smit &bull; Wedding Reception</p>
+    <a href="qr-card.html" class="footer-qr-link">Printable Venue QR Code</a>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
