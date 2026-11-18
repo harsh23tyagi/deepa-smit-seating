@@ -134,8 +134,7 @@
         seatEl.className = "seat-node" + (isHighlighted ? " highlighted" : "");
         seatEl.style.left = `${sx}px`;
         seatEl.style.top = `${sy}px`;
-        seatEl.textContent = String(idx + 1);
-        seatEl.title = `${guestName} (Seat ${idx + 1})`;
+        seatEl.title = guestName;
 
         if (isHighlighted) {
           const callout = document.createElement("div");
@@ -331,7 +330,7 @@
     const table = data.tables.find((t) => t.id === guest.tableId);
     selectionTableBadge.textContent = guest.tableLabel;
     selectionTitle.textContent = guest.name;
-    selectionSubtitle.textContent = `Seat ${guest.seatNumber} \u2022 ${table ? table.guests.length : ""} guests at this table`;
+    selectionSubtitle.textContent = `${table ? table.guests.length : ""} guests at this table`;
     selectionBanner.classList.remove("hidden");
 
     switchView("floor");
@@ -404,7 +403,7 @@
         return `
           <li class="search-item" role="option" data-index="${i}">
             <span class="search-item-name">${highlightedName}</span>
-            <span class="search-item-meta">${escapeHtml(g.tableLabel)} &bull; Seat ${g.seatNumber}</span>
+            <span class="search-item-meta">${escapeHtml(g.tableLabel)}</span>
           </li>
         `;
       })
@@ -644,7 +643,7 @@
           btn.type = "button";
           btn.innerHTML = `
             <span>${highlightMatch(g.name, q)}</span>
-            <span class="seat-idx">Seat ${g.seatNumber}</span>
+            <span class="seat-idx">&rarr;</span>
           `;
           btn.addEventListener("click", () => selectGuest(g));
           li.appendChild(btn);
@@ -693,7 +692,7 @@
       seatBtn.style.left = `${sx}px`;
       seatBtn.style.top = `${sy}px`;
       seatBtn.innerHTML = `
-        <span class="preview-seat-dot">${idx + 1}</span>
+        <span class="preview-seat-dot"></span>
         <span class="preview-seat-label">${escapeHtml(guestName)}</span>
       `;
       seatBtn.addEventListener("click", () => renderModalPreview(table, idx));
@@ -702,7 +701,7 @@
       const li = document.createElement("li");
       li.className = "modal-guest-item" + (isActive ? " active" : "");
       li.innerHTML = `
-        <span class="modal-seat-num">${idx + 1}</span>
+        <span class="modal-seat-num">&bull;</span>
         <span>${escapeHtml(guestName)}</span>
       `;
       li.addEventListener("click", () => renderModalPreview(table, idx));
